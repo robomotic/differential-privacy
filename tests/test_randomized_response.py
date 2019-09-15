@@ -33,7 +33,7 @@ def test_eps_privacy():
     assert is_true == True
 
     # this should be maximum utility since the responses are equivalent to direct questions
-    max_utility = GeneralRandomizedResponse(p_00=1.0, p_01=.0, p_10=1.0, p_11=.0)
+    max_utility = GeneralRandomizedResponse(p_00=1.0, p_01=.0, p_10=0.0, p_11=1.0)
 
     is_false = max_utility.check_eps_privacy(100.0)
 
@@ -55,4 +55,32 @@ def test_optimal_rr():
 
     assert is_true == True
 
+
+def test_mass_rr():
+    max_util_grr = GeneralRandomizedResponse(p_00=1.0, p_01=.0, p_10=0.0, p_11=1.0)
+
+    # percentage of yes in truth
+    for pi_1 in seq_floats(0.0,1.1,0.1):
+        P_X = max_util_grr.get_P_X_mass(pi_1=pi_1)
+
+        assert round(P_X['P(Y=0)'],1)==round(1.0-pi_1,1)
+        assert round(P_X['P(Y=1)'],1)==round(pi_1,1)
+
+    # percentage of no in truth
+    for pi_0 in seq_floats(0.0,1.1,0.1):
+        P_X = max_util_grr.get_P_X_mass(pi_0=pi_0)
+
+        assert round(P_X['P(Y=0)'],1)== round(pi_0,1)
+        assert round(P_X['P(Y=1)'],1)== round(1.0-pi_0,1)
+
+
+    # this should be maximum privacy since the responses have 0 utility
+    max_privacy_grr = GeneralRandomizedResponse(p_00=.5, p_01=.5, p_10=.5, p_11=.5)
+
+    # percentage of yes in truth
+    for pi_1 in seq_floats(0.0,1.1,0.1):
+        # the proportion doesn't matter because they are blind responding
+        P_X = max_privacy_grr.get_P_X_mass(pi_1=pi_1)
+
+        assert round(P_X['P(Y=1)'], 1) == 0.5
 

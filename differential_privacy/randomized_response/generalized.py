@@ -21,6 +21,7 @@ __all__ = []
 
 import math
 import warnings
+from typing import Dict, Tuple, Sequence
 
 class GeneralRandomizedResponse():
     '''
@@ -91,13 +92,57 @@ class GeneralRandomizedResponse():
         else:
             p = self._P[0][0] / self._P[0][1]
 
-        if self._P[1][0] ==.0:
+        if self._P[1][0] == .0:
             q = float("inf")
         else:
             q = self._P[1][1] / self._P[1][0]
 
         if max(p,q) <= math.exp(eps)+tol: return True
         else: return False
+
+    def get_P_X_mass(self,pi_0:float=None,pi_1:float=None)->Dict[str, float]:
+        '''
+
+        :param pi_0: true proportion of individuals without sensitive attribute
+        :param pi_1: true proportion of individuals with sensitive attribute
+        :return:
+        '''
+        mass = {'P(Y=0)':None,'P(Y=1)':None}
+
+        if pi_0 is not None: pi_1 = 1.0 - pi_0
+        if pi_1 is not None: pi_0 = 1.0 - pi_1
+
+        mass['P(Y=0)'] = pi_0 * self._P[0][0] + pi_1 * self._P[0][1]
+        mass['P(Y=1)'] = pi_1 * self._P[1][1] + pi_0 * self._P[1][0]
+
+        return mass
+
+    def get_unbiased_mean_estimator(self,lambda_0:float=None,lambda_1:float=None)->Dict[str, float]:
+        '''
+        We use pi_0 (pi_1) to describe the true proportion of value 0 (1)
+        We use pihat_0 (pihat_1) to described the unbiased estimator for pi_0 (pi_1)
+        We use lambda_0 (lambda_1) to describe the observed proportion of value 0 (1)
+
+        :return: A dictiionary with he unbiased estimators pihat_0, pihat_1
+        '''
+
+        _ = {'pihat_0':None,'pihat_1':None}
+        if lambda_0 is not None:
+            if lambda_0 >=.0 and lambda_0<=1.0:
+                _['pihat_0'] = (self._P[0][0] - 1.0 )/ (2* self._P[0][0] -1) + lambda_0/(2* self._P[0][0] -1)
+            else: raise Exception('This is not a probability')
+
+        if lambda_1 is not None:
+            if lambda_1 >= .0 and lambda_1 <= 1.0:
+                _['pihat_1'] = (self._P[0][0] - 1.0 )/ (2* self._P[0][0] -1) + lambda_1/(2* self._P[0][0] -1)
+            else: raise Exception('This is not a probability')
+
+        return _
+
+    def get_unbiased_variance_estimator(self):
+        pass
+
+
 
 
 
