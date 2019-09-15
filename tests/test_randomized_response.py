@@ -43,3 +43,16 @@ def test_eps_privacy():
     is_big = max_utility.check_eps_privacy(float('inf'))
 
     assert is_big == True
+
+
+def test_optimal_rr():
+    a_privacy = GeneralRandomizedResponse()
+
+    target_eps = 1.0
+    a_privacy.set_optimal_utility(target_eps)
+
+    is_true = a_privacy.check_eps_privacy(target_eps,tol=5e-16)
+
+    assert is_true == True
+
+

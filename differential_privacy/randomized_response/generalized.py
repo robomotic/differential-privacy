@@ -30,7 +30,7 @@ class GeneralRandomizedResponse():
 
     '''
 
-    def __init__(self,p_00:float,p_01:float,p_10:float,p_11:float)->None:
+    def __init__(self,p_00:float=.5,p_01:float=.5,p_10:float=.5,p_11:float=.5)->None:
         '''
         Constructor where p_uv= P[y_i = u | x_i = v] and u,v in {0,1} denotes the probability that the random output
         is u when the real attribute value x_i for C_i is v; here p_uv in (0,1).
@@ -64,7 +64,20 @@ class GeneralRandomizedResponse():
         # P is a 2x2 design matrix row by row
         self._P = [[p_00,p_01],[p_10,p_11]]
 
-    def check_eps_privacy(self,eps:float)->bool:
+    def set_optimal_utility(self,eps:float)->None:
+        '''
+        Set optimal design matrix based on epsilon parameter
+        :param eps: the epsilon parameter
+        :return: None
+        '''
+
+        p_00 = p_11 = math.exp(eps)/(1+ math.exp(eps))
+        p_01 = p_10 = 1/(1+ math.exp(eps))
+
+        # change P
+        self._P = [[p_00,p_01],[p_10,p_11]]
+
+    def check_eps_privacy(self,eps:float,tol:float=0)->bool:
         '''
         Check that the design matrix is eps-differentially private
         :param eps: the epsilon parameter
@@ -83,7 +96,7 @@ class GeneralRandomizedResponse():
         else:
             q = self._P[1][1] / self._P[1][0]
 
-        if max(p,q) <= math.exp(eps): return True
+        if max(p,q) <= math.exp(eps)+tol: return True
         else: return False
 
 
