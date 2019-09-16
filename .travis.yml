@@ -11,7 +11,7 @@ python:
 # Install any dependencies for running the tests:
 install:
   - pip install -r requirements.txt
-  - pip install .
+  - pip install -e .
   - pip install codecov pytest-cov
 # command to run tests
 script: py.test tests --cov=differential_privacy
