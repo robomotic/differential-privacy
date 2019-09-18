@@ -1,7 +1,9 @@
 # Python Differential Privacy Library
 
+[![Python versions](https://img.shields.io/pypi/pyversions/differential-privacy.svg)](https://pypi.org/project/differential-privacy/)
 [![PyPi version](https://img.shields.io/pypi/v/differential-privacy.svg)](https://pypi.python.org/pypi/differential-privacy)
 [![Build Status](https://travis-ci.org/robomotic/differential-privacy.svg?branch=master)](https://travis-ci.org/robomotic/differential-privacy)
+[![Coverage Status](https://coveralls.io/repos/github/robomotic/differential-privacy/badge.svg?branch=master)](https://coveralls.io/github/robomotic/differential-privacy?branch=master)
 
 A library that contains implementations of differential privacy algorithms found in literature.
 

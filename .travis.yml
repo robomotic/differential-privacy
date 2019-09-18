@@ -4,16 +4,18 @@
 
 language: python
 python:
+  - "3.4"
   - "3.5"
   - "3.6"
-  - "3.4"
-  - "2.7"
+  - "3.7"
 # Install any dependencies for running the tests:
 install:
   - pip install -r requirements.txt
   - pip install -e .
+  - pip install pytest
   - pip install codecov pytest-cov
+  - pip install coveralls
 # command to run tests
 script: py.test tests --cov=differential_privacy
 after_success:
-  codecov
+  - coveralls
