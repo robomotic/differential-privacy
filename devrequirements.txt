@@ -7,7 +7,7 @@ chardet==3.0.4
 codecov==2.0.15
 coverage==4.5.4
 docutils==0.15.2
-filelock==3.0.12
+filelock==3.29.0
 idna==2.8
 importlib-metadata==0.22
 more-itertools==7.2.0
