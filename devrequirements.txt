@@ -5,7 +5,7 @@ bumpversion==0.5.3
 certifi==2019.9.11
 chardet==3.0.4
 codecov==2.0.15
-coverage==4.5.4
+coverage==7.13.5
 docutils==0.15.2
 filelock==3.0.12
 idna==2.8
